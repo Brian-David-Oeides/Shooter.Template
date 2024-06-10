@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.15f;
     [SerializeField]
     private float _canFire = -1f;
+    [SerializeField]
+    private int _lives = 3; //dont access it directly create a method called damage
 
     void Start()
     {
@@ -49,10 +51,17 @@ public class Player : MonoBehaviour
 
     void CalculateFire()
     {
-        //if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
-        //{
-            _canFire = Time.time + _fireRate;
-            Instantiate(_laserPrefab, this.transform.position + new Vector3(0,0.9f,0), Quaternion.identity);
-        //}
+        _canFire = Time.time + _fireRate;
+        Instantiate(_laserPrefab, this.transform.position + new Vector3(0,0.9f,0), Quaternion.identity);
+    }
+    public void Damage() 
+    {
+        
+        _lives -= 1; 
+        
+        if (_lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
