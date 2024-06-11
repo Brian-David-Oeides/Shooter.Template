@@ -15,10 +15,18 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3; //dont access it directly create a method called damage
+    private SpawnManager _spawnManager;
+    
 
     void Start()
     {
         this.transform.position = new Vector3(0,0,0);
+        _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+        
+        if (_spawnManager == null)
+        {
+            Debug.LogError("The Spawn Manager is NULL.");//find the object get the spawnManager and Get the component
+        }
     }
 
     void Update()
@@ -60,7 +68,10 @@ public class Player : MonoBehaviour
         _lives -= 1; 
         
         if (_lives < 1)
-        {
+        {   
+            //communicate with spawn manager
+            _spawnManager.OnPlayerDeath();
+            // stop spawning
             Destroy(this.gameObject);
         }
     }
